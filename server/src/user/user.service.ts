@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 
-import { CreateParameter } from './parameters/create.parameter';
-import { FindParameter } from './parameters/find.parameter';
-import { UpdateParameter } from './parameters/update.parameter';
-import { DeleteResponse } from './responses/delete.response';
+import { UserCreateParameter } from './parameters/user-create.parameter';
+import { UserFindParameter } from './parameters/user-find.parameter';
+import { UserUpdateParameter } from './parameters/user-update.parameter';
+import { UserDeleteResponse } from './responses/user-delete.response';
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  public async create(data: CreateParameter): Promise<User> {
+  public async create(data: UserCreateParameter): Promise<User> {
     const user = new User();
 
     user.fullName = data.fullName;
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   public async findAll(
-    filter: FindParameter = {},
+    filter: UserFindParameter = {},
     relations: string[] = [],
   ): Promise<User[]> {
     try {
@@ -61,7 +61,7 @@ export class UserService {
     }
   }
 
-  public async update(id: number, data: UpdateParameter): Promise<User> {
+  public async update(id: number, data: UserUpdateParameter): Promise<User> {
     try {
       return this.userRepository.save({ id, ...data });
     } catch (e) {
@@ -72,7 +72,7 @@ export class UserService {
     }
   }
 
-  public async remove(id: number): Promise<DeleteResponse> {
+  public async remove(id: number): Promise<UserDeleteResponse> {
     try {
       return {
         isUserDeleted:

@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Session } from './entities/session.entity';
-import { CreateParameter } from './parameters/create.parameter';
-import { FindParameter } from './parameters/find.parameter';
-import { UpdateParameter } from './parameters/update.parameter';
-import { DeleteResponse } from './responses/delete.response';
+import { SessionCreateParameter } from './parameters/session-create.parameter';
+import { SessionFindParameter } from './parameters/session-find.parameter';
+import { SessionUpdateParameter } from './parameters/session-update.parameter';
+import { SessionDeleteResponse } from './responses/session-delete.response';
 import { SessionService } from './session.service';
 
 @ApiTags('Session')
@@ -22,13 +22,13 @@ export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
   @Post()
-  public async create(@Body() data: CreateParameter): Promise<Session> {
+  public async create(@Body() data: SessionCreateParameter): Promise<Session> {
     return this.sessionService.create(data);
   }
 
   @Get()
   public async findAll(
-    @Query() filter: FindParameter = {},
+    @Query() filter: SessionFindParameter = {},
   ): Promise<Session[]> {
     return this.sessionService.findAll(
       { ...filter, relations: undefined },
@@ -47,13 +47,13 @@ export class SessionController {
   @Patch(':id')
   public async update(
     @Param('id') id: string,
-    @Body() data: UpdateParameter,
+    @Body() data: SessionUpdateParameter,
   ): Promise<Session> {
     return this.sessionService.update(+id, data);
   }
 
   @Delete(':id')
-  public async removeById(@Param('id') id: string): Promise<DeleteResponse> {
+  public async removeById(@Param('id') id: string): Promise<SessionDeleteResponse> {
     return this.sessionService.remove(+id);
   }
 }

@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Session } from './entities/session.entity';
 
-import { CreateParameter } from './parameters/create.parameter';
-import { FindParameter } from './parameters/find.parameter';
-import { UpdateParameter } from './parameters/update.parameter';
-import { DeleteResponse } from './responses/delete.response';
+import { SessionCreateParameter } from './parameters/session-create.parameter';
+import { SessionFindParameter } from './parameters/session-find.parameter';
+import { SessionUpdateParameter } from './parameters/session-update.parameter';
+import { SessionDeleteResponse } from './responses/session-delete.response';
 
 @Injectable()
 export class SessionService {
@@ -15,7 +15,7 @@ export class SessionService {
     private sessionRepository: Repository<Session>,
   ) {}
 
-  public async create(data: CreateParameter): Promise<Session> {
+  public async create(data: SessionCreateParameter): Promise<Session> {
     const session = new Session();
 
     session.secret = data.secret;
@@ -31,7 +31,7 @@ export class SessionService {
   }
 
   public async findAll(
-    filter: FindParameter = {},
+    filter: SessionFindParameter = {},
     relations: string[] = [],
   ): Promise<Session[]> {
     try {
@@ -61,7 +61,10 @@ export class SessionService {
     }
   }
 
-  public async update(id: number, data: UpdateParameter): Promise<Session> {
+  public async update(
+    id: number,
+    data: SessionUpdateParameter,
+  ): Promise<Session> {
     try {
       return this.sessionRepository.save({ id, ...data });
     } catch (e) {
@@ -72,7 +75,7 @@ export class SessionService {
     }
   }
 
-  public async remove(id: number): Promise<DeleteResponse> {
+  public async remove(id: number): Promise<SessionDeleteResponse> {
     try {
       return {
         isSessionDeleted:
